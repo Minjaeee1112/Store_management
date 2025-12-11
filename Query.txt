@@ -1,0 +1,82 @@
+-- OrderTable 테이블 생성
+CREATE TABLE OrderTable (
+    OrderTableID INT AUTO_INCREMENT PRIMARY KEY,
+    TableNumber VARCHAR(10) NOT NULL,
+    Status VARCHAR(50) DEFAULT 'Available',
+    Capacity INT
+);
+
+-- User 테이블 생성
+CREATE TABLE User (
+    UserID INT PRIMARY KEY AUTO_INCREMENT,
+    UserName VARCHAR(100),
+    UserEmail VARCHAR(100),
+    UserPassword VARCHAR(100),
+    UserRole VARCHAR(50)
+);
+
+-- Product 테이블 생성
+CREATE TABLE Product (
+    ProductID INT PRIMARY KEY AUTO_INCREMENT,
+    ProductName VARCHAR(100),
+    ProductPrice DECIMAL(10, 2),
+    ProductDescription TEXT,
+    ProductStock INT,
+    ProductPicture VARCHAR(255),
+    ProductCategory VARCHAR(100)
+);
+
+-- Order 테이블 생성
+CREATE TABLE `Order` (
+    OrderID INT PRIMARY KEY AUTO_INCREMENT,
+    UserID INT,
+    OrderTableID INT,
+    OrderDate DATETIME,
+    TotalAmount DECIMAL(10, 2),
+    PaymentStatus VARCHAR(50),
+    OrderStatus VARCHAR(50),
+    FOREIGN KEY (UserID) REFERENCES User(UserID),
+    FOREIGN KEY (OrderTableID) REFERENCES OrderTable(OrderTableID)
+);
+
+-- OrderItem 테이블 생성
+CREATE TABLE OrderItem (
+    OrderItemID INT PRIMARY KEY AUTO_INCREMENT,
+    ProductID INT,
+    OrderID INT,
+    Quantity INT,
+    FinalPrice DECIMAL(10, 2),
+    FOREIGN KEY (ProductID) REFERENCES Product(ProductID),
+    FOREIGN KEY (OrderID) REFERENCES `Order`(OrderID)
+);
+
+-- Payment 테이블 생성
+CREATE TABLE Payment (
+    PaymentID INT PRIMARY KEY AUTO_INCREMENT,
+    OrderID INT,
+    PaymentDate DATETIME,
+    PaymentAmount DECIMAL(10, 2),
+    PaymentMethod VARCHAR(50),
+    FOREIGN KEY (OrderID) REFERENCES `Order`(OrderID)
+);
+
+-- UserSession 테이블 생성
+CREATE TABLE UserSession (
+    SessionID VARCHAR(255) PRIMARY KEY,
+    UserID INT,
+    ExpiryDate DATETIME,
+    FOREIGN KEY (UserID) REFERENCES User(UserID)
+);
+
+-- SalesRecord 테이블 생성
+CREATE TABLE SalesRecord (
+    RecordID INT PRIMARY KEY AUTO_INCREMENT,
+    OrderID INT,
+    PaymentID INT,
+    Date DATETIME,
+    Income DECIMAL(10, 2),
+    Expense DECIMAL(10, 2),
+    Profit DECIMAL(10, 2),
+    FOREIGN KEY (OrderID) REFERENCES `Order`(OrderID),
+    FOREIGN KEY (PaymentID) REFERENCES Payment(PaymentID)
+);
