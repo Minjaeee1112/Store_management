@@ -135,7 +135,3 @@
 -Payment
 
 
-• 사용 기술
-구분 기술 : 
--개발 언어	JSP, SQL
-- 개발 도구	Eclipse, MySQL DB	MySQL
